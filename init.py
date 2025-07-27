@@ -1,9 +1,6 @@
 print("initializing Drone.........")
 
-from dronekit import connect, VehicleMode, LocationGlobalRelative
-import time
-import socket
-import exceptions
+from dronekit import connect
 import argparse
 
 #GroundControl ile bağlantı kur

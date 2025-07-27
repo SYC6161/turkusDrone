@@ -1,15 +1,16 @@
-from init import *
-from takeoff_and_land import *
+import init
+import takeoff_and_land as TAL
+import time
 
-vehicle = connectMyCopter()
+vehicle = init.connectMyCopter()
 
 print("Araca Bağlanıldı.")
 
-vehicle.mode=VehicleMode("GUIDED")
+vehicle.mode=TAL.VehicleMode("GUIDED")
 
-armAndTakeoff(2) #2 metre yüksel
+TAL.armAndTakeoff(2,vehicle) #2 metre yüksel
 
-vehicle.mode = VehicleMode("LAND") #2 metreye ulaştıktan sonra yere in
+vehicle.mode = TAL.VehicleMode("LAND") #2 metreye ulaştıktan sonra yere in
 
 time.sleep(2)
 

@@ -1,9 +1,6 @@
 #Dependincies
-from dronekit import connect, VehicleMode, LocationGlobalRelative
+from dronekit import VehicleMode, LocationGlobalRelative
 import time
-import socket
-import exceptions
-import argparse
 
 def armAndTakeoff(targetAltitude,vehicle):
     while not vehicle.isArmable:
