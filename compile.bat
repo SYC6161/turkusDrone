@@ -1,1 +1,0 @@
-start python3 .\src\init.py .\src\takeoff_and_land.py .\main.py
