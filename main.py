@@ -1,7 +1,7 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time
 import random
-import distanceFinder
+from distanceFinder import get_distance_meters
 from connection import connectToDevice
 from movementPlugins import avoid_obstacle
 # Bağlantıyı başlat (SITL için)
@@ -29,8 +29,9 @@ def arm_and_takeoff(target_altitude):
             break
         time.sleep(1)
 
-#def check_for_obstacle():
+def check_for_obstacle():
     #Sensör okunacak yolda birşey var mı  diye
+    None
 
 
 def condition_yaw(heading, relative=True):
@@ -75,7 +76,7 @@ def main_mission():
 
         # Engel kontrolü (sürekli olması gerekecek)
         if check_for_obstacle():
-            avoid_obstacle()
+            avoid_obstacle(condition_yaw,vehicle)
 
         # Waypoint'e varış kontrolü
         while True:

@@ -1,4 +1,7 @@
-def avoid_obstacle():
+import time
+from dronekit import VehicleMode
+
+def avoid_obstacle(condition_yaw,vehicle):
     print("Engelden kaçınılıyor: Sağa dönülüyor.")
     #90 derece sağa dönüş yap
     vehicle.mode = VehicleMode("GUIDED")

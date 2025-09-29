@@ -1,3 +1,5 @@
+from dronekit import connect    
+
 def connectToDevice(vehicle):
     import argparse
     parser = argparse.ArgumentParser(description="Commands")
