@@ -1,6 +1,11 @@
 --TODO
-Bağlantı
-Obstacle
-Distance Finder
++Bağlantı
++Avoiding obstacle
++Distance Finder
 Otonom uçuş
 Payload sistemi
+Travel sistemi
++Arming
++Test Takeoff
+Görüntü işleme
+Pattern algılama

@@ -10,16 +10,26 @@ vehicle = None
 
 connectToDevice(vehicle)
 
-def arm_and_takeoff(target_altitude):
-    print("Drone arming...")
-    while not vehicle.is_armable:
-        print("Drone hazır değil...")
-        time.sleep(1)
-    vehicle.mode = VehicleMode("GUIDED")
+def armingVehicle():
     vehicle.armed = True
-    while not vehicle.armed:
-        print("Motorlar hazırlanıyor...")
-        time.sleep(1)
+    vehicle.mode = VehicleMode("GUIDED")
+    print("Araç mod değişikliği bekleniyor....")
+    time.sleep(3)
+
+if(vehicle.armed == False):
+        print("Araç mod değişikliği başarısız tekrar deneniyor....")
+        armingVehicle()
+else:
+    pass
+
+if(vehicle.mode.name != "GUIDED"):
+        print("Araç mod değişikliği başarısız tekrar deneniyor....")
+        armingVehicle()
+else:
+    pass    
+
+
+def arm_and_takeoff(target_altitude):
     print("Kalkış yapılıyor...")
     vehicle.simple_takeoff(target_altitude)
     while True:
