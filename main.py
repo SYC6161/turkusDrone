@@ -1,10 +1,14 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time
 import random
-
+import distanceFinder
+from connection import connectToDevice
+from movementPlugins import avoid_obstacle
 # Bağlantıyı başlat (SITL için)
-print("Drone'a bağlanılıyor...")
-vehicle = connect('udp:127.0.0.1:5760', wait_ready=True)
+
+vehicle = None
+
+connectToDevice(vehicle)
 
 def arm_and_takeoff(target_altitude):
     print("Drone arming...")
@@ -28,18 +32,11 @@ def arm_and_takeoff(target_altitude):
 #def check_for_obstacle():
     #Sensör okunacak yolda birşey var mı  diye
 
-def avoid_obstacle():
-    print("Engelden kaçınılıyor: Sağa dönülüyor.")
-    #90 derece sağa dönüş yap
-    vehicle.mode = VehicleMode("GUIDED")
-    condition_yaw(90)
-    time.sleep(3)  # Dönüş için bekle
-    print("Kaçınma tamamlandı.")
 
 def condition_yaw(heading, relative=True):
     """
     Yaw kontrolü için MAVLink komutu
-    heading: derece (0-360)
+    heading: derece
     relative: göreceli mi mutlak mı
     """
     from pymavlink import mavutil
@@ -98,17 +95,6 @@ def main_mission():
     vehicle.close()
     print("Drone görevini tamamladı ve bağlantı kapandı.")
 
-def get_distance_meters(aLocation1, aLocation2):
-    #İki kordinat arası mesafeyi bul
-    from math import radians, cos, sin, asin, sqrt
-    lat1, lon1 = aLocation1.lat, aLocation1.lon
-    lat2, lon2 = aLocation2.lat, aLocation2.lon
-    R = 6371000
-    dLat = radians(lat2 - lat1)
-    dLon = radians(lon2 - lon1)
-    a = sin(dLat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon/2)**2
-    c = 2 * asin(sqrt(a))
-    return R * c
 
 if __name__ == "__main__":
     try:
