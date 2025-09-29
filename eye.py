@@ -46,7 +46,7 @@ while True:
     # Display the captured frame
     cv2.imshow('Camera', frame)
 
-            
+    
 
     # Press 'q' to exit the loop
     if cv2.waitKey(1) == ord('q'):
