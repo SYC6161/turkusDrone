@@ -10,7 +10,7 @@ frame_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 # Define the codec and create VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (frame_width, frame_height))
-
+''''
 def detectShapes():
     for contour in contours:
         approx = cv2.approxPolyDP(contour, 0.01* cv2.arcLength(contour, True), True)
@@ -36,7 +36,7 @@ def detectShapes():
         else:
             cv2.putText(cam, "circle", (x, y), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
 
-
+'''
 while True:
     ret, frame = cam.read()
 
