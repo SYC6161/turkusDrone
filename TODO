@@ -4,8 +4,8 @@
 +Distance Finder
 Otonom uçuş
 Payload sistemi
-Travel sistemi
+Travel sistemi (a noktasından b noktasına gitme)
 +Arming
 +Test Takeoff
 Görüntü işleme
-Pattern algılama
+Pattern algılama (yerdeki altıgen gibi parkur elemanlarını algılama)
