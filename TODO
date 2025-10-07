@@ -2,10 +2,10 @@
 +Bağlantı
 +Avoiding obstacle
 +Distance Finder
-Otonom uçuş
-Payload sistemi
-Travel sistemi (a noktasından b noktasına gitme)
 +Arming
 +Test Takeoff
 Görüntü işleme
+8 çizme sistemi
+Payload alma/bırakma sistemi
+Travel sistemi (a noktasından b noktasına gitme)
 Pattern algılama (yerdeki altıgen gibi parkur elemanlarını algılama)
