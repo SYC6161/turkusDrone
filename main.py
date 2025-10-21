@@ -1,9 +1,10 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time
-import random
+import math
 from distanceFinder import get_distance_meters
 from connection import connectToDevice
 from movementPlugins import avoid_obstacle
+import figureEight
 # Bağlantıyı başlat (SITL için)
 
 vehicle = None
@@ -43,59 +44,38 @@ def check_for_obstacle():
     #Sensör okunacak yolda birşey var mı  diye
     None
 
+def get_location_offset_meters(original_location, dNorth, dEast):
+    earth_radius = 6378137.0  # Dünya yarıçapı (metre)
+    
+    dLat = dNorth / earth_radius
+    dLon = dEast / (earth_radius * math.cos(math.pi * original_location.lat / 180))
 
-def condition_yaw(heading, relative=True):
-    """
-    Yaw kontrolü için MAVLink komutu
-    heading: derece
-    relative: göreceli mi mutlak mı
-    """
-    from pymavlink import mavutil
-    if relative:
-        is_relative = 1  # göreceli
-    else:
-        is_relative = 0  # mutlak
-    msg = vehicle.message_factory.command_long_encode(
-        0, 0,                                  # target system, component
-        mavutil.mavlink.MAV_CMD_CONDITION_YAW,# komut
-        0,                                     # confirmation
-        heading,                              # param 1: hedef açısı
-        0,                                   # param 2: hız (deg/s)
-        1,                                   # param 3: yönde (1 saat yönünde)
-        is_relative,                         # param 4: relatif/mutlak
-        0, 0, 0)                             # param 5-7: boş
-    vehicle.send_mavlink(msg)
+    newlat = original_location.lat + (dLat * 180 / math.pi)
+    newlon = original_location.lon + (dLon * 180 / math.pi)
 
-def goto_waypoint(lat, lon, alt):
-    location = LocationGlobalRelative(lat, lon, alt)
-    vehicle.simple_goto(location)
+    return LocationGlobalRelative(newlat, newlon, original_location.alt)
+
 
 def main_mission():
-    waypoints = [
-        (vehicle.location.global_frame.lat + 0.0001, vehicle.location.global_frame.lon, 10),
-        (vehicle.location.global_frame.lat + 0.0001, vehicle.location.global_frame.lon + 0.0001, 10),
-        (vehicle.location.global_frame.lat, vehicle.location.global_frame.lon + 0.0001, 10),
-    ]
+    
+    missionID = 0
 
-    arm_and_takeoff(10)
-
-    for idx, point in enumerate(waypoints):
-        print(f"Waypoint {idx+1}: {point}")
-        goto_waypoint(*point)
-        time.sleep(2)  # Yolun yarısını geldik
-
-        # Engel kontrolü (sürekli olması gerekecek)
-        if check_for_obstacle():
-            avoid_obstacle(condition_yaw,vehicle)
-
-        # Waypoint'e varış kontrolü
+    if(missionID == 1):
+        vehicle.simple_takeoff(20)
         while True:
-            dist = get_distance_meters(vehicle.location.global_frame, LocationGlobalRelative(*point))
-            print(f"Waypoint'e uzaklık: {dist:.1f}m")
-            if dist < 1:
-                print("Waypoint'e ulaşıldı.")
-                break
-            time.sleep(1)
+            print(f"Yükseklik: {vehicle.location.global_relative_frame.alt:.1f}m")
+            if vehicle.location.global_relative_frame.alt >= 20 * 0.95:
+                print("Hedef irtifaya ulaşıldı.")
+            break
+        time.sleep(1)
+
+        print("100 metre ileri (kuzeye) gidiliyor...")
+        current_location = vehicle.location.global_relative_frame
+        target_location = get_location_offset_meters(current_location, dNorth=100, dEast=0)
+        vehicle.simple_goto(target_location)
+
+        for i in range(5):
+            figureEight(vehicle) 
 
     print("Görev tamamlandı, iniş yapılıyor.")
     vehicle.mode = VehicleMode("LAND")
