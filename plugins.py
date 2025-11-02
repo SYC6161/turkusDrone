@@ -35,3 +35,11 @@ def moveClockwise(center_lat, center_lon, radius, altitude, clockwise=True, poin
 def moveCounterClockwise(meters):
     #Move CounterClockwise given meters
     pass
+
+def avoid_obstacle(condition_yaw,vehicle):
+    print("Engelden kaçınılıyor: Sağa dönülüyor.")
+    #90 derece sağa dönüş yap
+    vehicle.mode = VehicleMode("GUIDED")
+    condition_yaw(90)
+    time.sleep(3)  # Dönüş için bekle
+    print("Kaçınma tamamlandı.")

@@ -3,7 +3,7 @@ import time
 import math
 from distanceFinder import get_distance_meters
 from connection import connectToDevice
-from movementPlugins import avoid_obstacle
+from plugins import avoid_obstacle
 import figureEight
 # Bağlantıyı başlat (SITL için)
 
