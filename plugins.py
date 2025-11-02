@@ -43,3 +43,30 @@ def avoid_obstacle(condition_yaw,vehicle):
     condition_yaw(90)
     time.sleep(3)  # Dönüş için bekle
     print("Kaçınma tamamlandı.")
+
+def armingVehicle(vehicle):
+    vehicle.armed = True
+    vehicle.mode = VehicleMode("GUIDED")
+    print("Araç mod değişikliği bekleniyor....")
+    time.sleep(3)
+
+def takeoff(target_altitude,vehicle):
+    print("Kalkış yapılıyor...")
+    vehicle.simple_takeoff(target_altitude)
+    while True:
+        print(f"Yükseklik: {vehicle.location.global_relative_frame.alt:.1f}m")
+        if vehicle.location.global_relative_frame.alt >= target_altitude * 0.95:
+            print("Hedef irtifaya ulaşıldı.")
+            break
+        time.sleep(1)
+    
+def get_location_offset_meters(original_location, dNorth, dEast):
+    earth_radius = 6378137.0  # Dünya yarıçapı (metre)
+    
+    dLat = dNorth / earth_radius
+    dLon = dEast / (earth_radius * math.cos(math.pi * original_location.lat / 180))
+
+    newlat = original_location.lat + (dLat * 180 / math.pi)
+    newlon = original_location.lon + (dLon * 180 / math.pi)
+
+    return LocationGlobalRelative(newlat, newlon, original_location.alt)

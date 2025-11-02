@@ -1,10 +1,10 @@
 from dronekit import connect    
+import argparse
 
 def connectToDevice(vehicle):
-    import argparse
     parser = argparse.ArgumentParser(description="Commands")
     parser.add_argument('--connect')
-    args= parser.parse_args()
+    args = parser.parse_args()
 
     connectionString = args.connect
 
