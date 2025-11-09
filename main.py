@@ -1,17 +1,20 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time
+import argparse
 import math
 from distanceFinder import get_distance_meters
-from connection import connectToDevice
 from plugins import avoid_obstacle, armingVehicle,takeoff
 from missions import firstMission
 # Bağlantıyı başlat (SITL için)
 
 missionID = print("Lütfen Görev IDsi Giriniz. 1) 8 çizme, 2) Payload")
 
-vehicle = None
-
-connectToDevice(vehicle)
+parser = argparse.ArgumentParser(description="Commands")
+parser.add_argument('--connect')
+args = parser.parse_args()
+connectionString = args.connect
+print("%s adresindeki aygıta bağlanılıyor." %connectionString)
+vehicle = connect(connectionString,wait_ready = True)
 
 armingVehicle(vehicle)
 
