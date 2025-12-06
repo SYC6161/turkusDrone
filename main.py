@@ -9,6 +9,7 @@ from missions import firstMission
 
 missionID = print("Lütfen Görev IDsi Giriniz. 1) 8 çizme, 2) Payload")
 
+#Drone'a bağlantı kur
 parser = argparse.ArgumentParser(description="Commands")
 parser.add_argument('--connect')
 args = parser.parse_args()
@@ -16,8 +17,8 @@ connectionString = args.connect
 print("%s adresindeki aygıta bağlanılıyor." %connectionString)
 vehicle = connect(connectionString,wait_ready = True)
 
+#Drone'u uçuşa hazır hale getir
 armingVehicle(vehicle)
-
 print("Araç hazırlanıyor.....")
 time.sleep(1)
 
@@ -28,7 +29,6 @@ if(vehicle.armed == False):
 if(vehicle.mode.name != "GUIDED"):
         print("Araç mod değişikliği başarısız tekrar deneniyor....")
         armingVehicle(vehicle)
-
 
 
 
