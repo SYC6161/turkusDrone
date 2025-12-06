@@ -36,8 +36,6 @@ def check_for_obstacle():
     #Sensör okunacak yolda birşey var mı  diye
     pass
 
-
-
 def main_mission(missionID):
 
     if(missionID == 1):
