@@ -2,12 +2,15 @@ from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time
 import argparse
 import math
+import pymavlink
 from distanceFinder import get_distance_meters
 from plugins import avoid_obstacle, armingVehicle,takeoff
-from missions import firstMission
+from missions import firstMission, secondMission
 # Bağlantıyı başlat (SITL için)
 
-missionID = print("Lütfen Görev IDsi Giriniz. 1) 8 çizme, 2) Payload")
+missionID = input("Lütfen Görev IDsi Giriniz. 1) 8 çizme, 2) Payload")
+
+#vehicle = connect('/dev/ttyAMA0', wait_ready=True, baud=57600)
 
 #Drone'a bağlantı kur
 parser = argparse.ArgumentParser(description="Commands")
@@ -17,34 +20,29 @@ connectionString = args.connect
 print("%s adresindeki aygıta bağlanılıyor." %connectionString)
 vehicle = connect(connectionString,wait_ready = True)
 
+
 #Drone'u uçuşa hazır hale getir
 armingVehicle(vehicle)
 print("Araç hazırlanıyor.....")
 time.sleep(1)
+while vehicle.armed == False and vehicle.mode.name != "GUIDED":
 
-if(vehicle.armed == False):
-        print("Araç mod değişikliği başarısız tekrar deneniyor....")
-        armingVehicle(vehicle)
+    armingVehicle(vehicle)
+    if (vehicle.armed == True and vehicle.mode.name != "GUIDED"):
+        break
 
-if(vehicle.mode.name != "GUIDED"):
-        print("Araç mod değişikliği başarısız tekrar deneniyor....")
-        armingVehicle(vehicle)
-
-
-
-def check_for_obstacle():
-    #Sensör okunacak yolda birşey var mı  diye
-    pass
 
 def main_mission(missionID):
-
     if(missionID == 1):
         firstMission(vehicle)
+    elif(missionID == 2):
+        secondMission(vehicle)
+    else:
+        print("Yanlış Görev Seçildi...")
 
+main_mission(missionID)
 
-if __name__ == "__main__":
-    try:
-        main_mission()
-    except KeyboardInterrupt:
+if __name__ == "__main__":  
+    if KeyboardInterrupt:
         print("Görev iptal edildi!")
         vehicle.close()
